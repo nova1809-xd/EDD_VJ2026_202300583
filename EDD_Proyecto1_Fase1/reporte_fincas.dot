@@ -1,0 +1,31 @@
+digraph G {
+  rankdir=TB;
+  node [shape=record, style=filled, fillcolor="#d5e8d4"];
+
+  { rank=same;
+    Finca0 [label="{Finca Santa Elena | *}"];
+    Finca1 [label="{Finca El Injerto | *}"];
+    NullFinca [label="NULL", shape=plaintext, style=solid];
+  }
+
+  Finca0 -> Finca1;
+  Finca1 -> NullFinca;
+
+  // pila de Finca Santa Elena
+  TOP0 [label="TOP", shape=plaintext, style=solid];
+  Finca0 -> TOP0 [style=dashed];
+  TOP0 -> Entrega0_0;
+  Entrega0_0 [label="{Fecha: 2026-06-01 | 120 Qq | *}", fillcolor="#fff2cc"];
+  NullPila0 [label="NULL", shape=plaintext, style=solid];
+  Entrega0_0 -> NullPila0;
+
+  // pila de Finca El Injerto
+  TOP1 [label="TOP", shape=plaintext, style=solid];
+  Finca1 -> TOP1 [style=dashed];
+  TOP1 -> Entrega1_0;
+  Entrega1_0 [label="{Fecha: 2026-06-12 | 45 Qq | *}", fillcolor="#fff2cc"];
+  Entrega1_0 -> Entrega1_1;
+  Entrega1_1 [label="{Fecha: 2026-06-10 | 40 Qq | *}", fillcolor="#fff2cc"];
+  NullPila1 [label="NULL", shape=plaintext, style=solid];
+  Entrega1_1 -> NullPila1;
+}

@@ -2,6 +2,7 @@
 #define LISTADOBLE_H
 
 #include <string>
+#include <fstream>
 
 using std::string;
 
@@ -34,6 +35,7 @@ public:
 
     void mostrar() const;
     bool estaVacia() const;
+    void generarReporteGrafo() const;
 };
 
 #endif

@@ -73,3 +73,60 @@ bool ColaDespulpado::dequeue(string& numero_lote,
     delete nodo_salida;
     return true;
 }
+
+#include <fstream>
+#include <cstdlib>
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
+void ColaDespulpado::generarReporteGrafo() const {
+    std::ofstream archivo("reporte_cola.dot");
+    if (!archivo.is_open()) {
+        cout << "error al crear el archivo dot de la cola." << endl;
+        return;
+    }
+
+    archivo << "digraph G {\n";
+    archivo << "  rankdir=LR;\n"; // de izquierda a derecha
+    // nodos color celestito
+    archivo << "  node [shape=record, style=filled, fillcolor=\"#a1cdd8\"];\n\n"; 
+
+    // punteros extremos
+    archivo << "  Frente [shape=plaintext, style=solid];\n";
+    archivo << "  Fin [shape=plaintext, style=solid];\n\n";
+
+    if (estaVacia()) {
+        archivo << "  Frente -> Fin;\n";
+    } else {
+        NodoCola* actual = frente;
+        int i = 0;
+        
+        // creamos los nodos con el formato de tu imagen: [Pedido # | finca | sacos Qq]
+        while (actual != nullptr) {
+            archivo << "  nodo" << i << " [label=\"{Pedido #" << (i + 1) 
+                    << " | " << actual->finca_solicitante 
+                    << " | " << actual->cantidad_sacos << " Qq}\"];\n";
+            actual = actual->siguiente;
+            i++;
+        }
+
+        // enlazamos Frente con el primer nodo
+        archivo << "\n  Frente -> nodo0;\n";
+
+        // enlazamos los nodos entre si
+        for (int j = 0; j < i - 1; j++) {
+            archivo << "  nodo" << j << " -> nodo" << (j + 1) << ";\n";
+        }
+
+        // el ultimo nodo apunta a Fin
+        archivo << "  nodo" << (i - 1) << " -> Fin;\n";
+    }
+
+    archivo << "}\n";
+    archivo.close();
+
+    system("dot -Tpng reporte_cola.dot -o reporte_cola.png");
+    cout << "reporte de cola generado (reporte_cola.png)." << endl;
+}

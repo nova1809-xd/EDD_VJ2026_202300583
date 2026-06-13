@@ -1,0 +1,14 @@
+digraph G {
+  rankdir=TB;
+  node [shape=record, style=filled, fillcolor="#fff2cc"];
+
+  TOP [shape=plaintext, style=solid];
+  Nulo [label="NULL", shape=plaintext, style=solid];
+
+  nodo0 [label="{Accion: Envio a Cola | Fecha: 2026-06-13 14:30 | Detalle: Lote 022 enviado a despulpado}"];
+  nodo1 [label="{Accion: Registro de Lote | Fecha: 2026-06-13 10:00 | Detalle: Se registro Lote 003 de Finca La Hermosa}"];
+
+  TOP -> nodo0;
+  nodo0 -> nodo1;
+  nodo1 -> Nulo;
+}

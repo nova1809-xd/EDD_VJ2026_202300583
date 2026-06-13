@@ -1,0 +1,36 @@
+codigo_lote,finca_origen,variedad,municipio,departamento,cantidad_sacos,peso_kg_saco,fecha_recepcion,nivel_minimo_reorden
+LOT-042,Finca San Sebastian,Pache,San Marcos,San Marcos,60,46,2026-06-02,10
+LOT-015,Finca Santa Elena,Bourbon,Antigua Guatemala,Sacatepequez,120,46,2026-06-01,20
+LOT-088,Finca El Cipresal,Caturra,Antigua Guatemala,Sacatepequez,175,46,2026-06-04,30
+LOT-003,Finca La Hermosa,Caturra,Coban,Alta Verapaz,200,46,2026-06-02,30
+LOT-027,Finca Dos Marias,Pacamara,La Reforma,San Marcos,55,46,2026-06-05,15
+LOT-002,Finca El Injerto,Geisha,Huehuetenango,Huehuetenango,85,46,2026-06-01,15
+LOT-091,Finca Los Alpes,Catuai,San Pedro Necta,Huehuetenango,110,46,2026-06-06,20
+LOT-006,Finca La Maravilla,Bourbon,Atitlan,Solola,90,46,2026-06-03,15
+LOT-034,Finca El Paraiso,Catuai,Fraijanes,Guatemala,150,46,2026-06-03,25
+LOT-018,Finca Vista Hermosa,Geisha,Huehuetenango,Huehuetenango,45,46,2026-06-04,10
+LOT-055,Finca Santa Rosa,Bourbon,Cuilco,Huehuetenango,130,46,2026-06-07,25
+LOT-009,Finca San Diego,Pacamara,Yepocapa,Chimaltenango,75,46,2026-06-02,15
+LOT-076,Finca El Socorro,Maragogipe,Palencia,Guatemala,40,46,2026-06-05,10
+LOT-011,Finca La Estrella,Caturra,Coban,Alta Verapaz,180,46,2026-06-08,30
+LOT-063,Finca Palo Blanco,Bourbon,La Democracia,Huehuetenango,95,46,2026-06-06,20
+LOT-022,Finca Las Nubes,Geisha,Antigua Guatemala,Sacatepequez,60,46,2026-06-09,15
+LOT-084,Finca Montecristo,Pache,San Lucas Toliman,Solola,105,46,2026-06-10,20
+LOT-005,Finca San Jose,Catuai,San Martin Jilotepeque,Chimaltenango,88,46,2026-06-03,15
+LOT-049,Finca Bella Vista,Bourbon,Acatenango,Chimaltenango,140,46,2026-06-11,25
+LOT-012,Finca El Morito,Pacamara,Mataquescuintla,Jalapa,70,46,2026-06-04,10
+LOT-099,Finca Los Suspiros,Caturra,San Pedro Carcha,Alta Verapaz,190,46,2026-06-12,35
+LOT-031,Finca La Providencia,Geisha,San Pedro Necta,Huehuetenango,50,46,2026-06-07,10
+LOT-077,Finca Santa Clara,Bourbon,Antigua Guatemala,Sacatepequez,115,46,2026-06-08,20
+LOT-008,Finca El Zapote,Catuai,Pueblo Nuevo Viñas,Santa Rosa,160,46,2026-06-05,25
+LOT-061,Finca San Antonio,Pache,San Marcos,San Marcos,65,46,2026-06-09,15
+LOT-029,Finca La Esperanza,Caturra,Coban,Alta Verapaz,210,46,2026-06-10,40
+LOT-082,Finca El Carmen,Bourbon,Atitlan,Solola,85,46,2026-06-11,15
+LOT-014,Finca Buenos Aires,Geisha,Huehuetenango,Huehuetenango,40,46,2026-06-12,10
+LOT-053,Finca Las Americas,Pacamara,Fraijanes,Guatemala,95,46,2026-06-06,20
+LOT-007,Finca San Miguel,Catuai,San Lucas Toliman,Solola,125,46,2026-06-07,20
+LOT-094,Finca El Rosario,Bourbon,Yepocapa,Chimaltenango,100,46,2026-06-13,15
+LOT-038,Finca Santa Margarita,Caturra,San Juan Chamelco,Alta Verapaz,170,46,2026-06-14,30
+LOT-019,Finca La Soledad,Geisha,Antigua Guatemala,Sacatepequez,55,46,2026-06-15,10
+LOT-071,Finca El Tempixque,Pache,Acatenango,Chimaltenango,75,46,2026-06-10,15
+LOT-045,Finca San Francisco,Catuai,Cuilco,Huehuetenango,135,46,2026-06-12,25

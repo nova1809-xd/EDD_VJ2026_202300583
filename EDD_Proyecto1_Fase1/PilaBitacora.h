@@ -2,6 +2,7 @@
 #define PILABITACORA_H
 
 #include <string>
+#include <fstream>
 
 using std::string;
 
@@ -25,6 +26,7 @@ public:
     void push(const string& fecha_hora, const string& tipo_accion, const string& detalle_operacion);
     void mostrarHistorial() const;
     bool estaVacia() const;
+    void generarReporteGrafo() const;
 };
 
 #endif

@@ -2,6 +2,7 @@
 #define COLADESPULPADO_H
 
 #include <string>
+#include <fstream>
 
 using std::string;
 
@@ -35,6 +36,7 @@ public:
                  string& fecha_ingreso);
 
     bool estaVacia() const;
+    void generarReporteGrafo() const;
 };
 
 #endif

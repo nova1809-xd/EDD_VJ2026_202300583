@@ -2,6 +2,7 @@
 #define LISTAFINCAS_H
 
 #include <string>
+#include <fstream>
 
 using std::string;
 
@@ -23,6 +24,8 @@ public:
 
     void push(const string& fecha, int cantidad_sacos);
     void mostrarEntregas() const;
+
+    NodoEntrega* getTope() const { return tope; }
 };
 
 // nodo para la lista simple de fincas
@@ -44,6 +47,8 @@ public:
     void registrarFinca(const string& nombre_finca);
     void registrarEntregaFinca(const string& nombre_finca, const string& fecha, int cantidad_sacos);
     void mostrarTodo() const;
+
+    void generarReporteGrafo() const;
 };
 
 #endif

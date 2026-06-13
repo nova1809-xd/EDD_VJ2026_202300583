@@ -87,3 +87,90 @@ void ListaFincas::mostrarTodo() const {
         actual = actual->siguiente;
     }
 }
+
+#include <fstream>
+#include <cstdlib>
+
+void ListaFincas::generarReporteGrafo() const {
+    std::ofstream archivo("reporte_fincas.dot");
+    if (!archivo.is_open()) {
+        cout << "error al crear el archivo dot de fincas." << endl;
+        return;
+    }
+
+    archivo << "digraph G {\n";
+    archivo << "  rankdir=TB;\n"; // de arriba hacia abajo
+    // color verdecito para las fincas
+    archivo << "  node [shape=record, style=filled, fillcolor=\"#d5e8d4\"];\n\n";
+
+    NodoFinca* actualFinca = cabeza;
+    int f = 0;
+
+    // 1. declaramos todas las fincas en la misma linea horizontal (rank=same)
+    archivo << "  { rank=same;\n";
+    while (actualFinca != nullptr) {
+        archivo << "    Finca" << f << " [label=\"{" << actualFinca->nombre_finca << " | *}\"];\n";
+        actualFinca = actualFinca->siguiente;
+        f++;
+    }
+    archivo << "    NullFinca [label=\"NULL\", shape=plaintext, style=solid];\n";
+    archivo << "  }\n\n";
+
+    // 2. enlazamos las fincas entre si (de izquierda a derecha)
+    actualFinca = cabeza;
+    f = 0;
+    while (actualFinca != nullptr) {
+        if (actualFinca->siguiente != nullptr) {
+            archivo << "  Finca" << f << " -> Finca" << (f + 1) << ";\n";
+        } else {
+            archivo << "  Finca" << f << " -> NullFinca;\n";
+        }
+        actualFinca = actualFinca->siguiente;
+        f++;
+    }
+
+    // 3. para cada finca, dibujamos su pila de entregas colgando hacia abajo
+    actualFinca = cabeza;
+    f = 0;
+    while (actualFinca != nullptr) {
+        // usamos el metodo getTope() que agregamos en el .h
+        NodoEntrega* actualEntrega = actualFinca->historial_entregas->getTope();
+        
+        archivo << "\n  // pila de " << actualFinca->nombre_finca << "\n";
+        archivo << "  TOP" << f << " [label=\"TOP\", shape=plaintext, style=solid];\n";
+        
+        // flecha punteada desde la finca hacia su TOP
+        archivo << "  Finca" << f << " -> TOP" << f << " [style=dashed];\n";
+
+        if (actualEntrega == nullptr) {
+            archivo << "  NullPila" << f << " [label=\"NULL\", shape=plaintext, style=solid];\n";
+            archivo << "  TOP" << f << " -> NullPila" << f << ";\n";
+        } else {
+            int e = 0;
+            archivo << "  TOP" << f << " -> Entrega" << f << "_0;\n";
+            
+            while (actualEntrega != nullptr) {
+                // color amarillito para los nodos de la pila
+                archivo << "  Entrega" << f << "_" << e << " [label=\"{Fecha: " << actualEntrega->fecha 
+                        << " | " << actualEntrega->cantidad_sacos << " Qq | *}\", fillcolor=\"#fff2cc\"];\n";
+                
+                if (actualEntrega->siguiente != nullptr) {
+                    archivo << "  Entrega" << f << "_" << e << " -> Entrega" << f << "_" << (e + 1) << ";\n";
+                } else {
+                    archivo << "  NullPila" << f << " [label=\"NULL\", shape=plaintext, style=solid];\n";
+                    archivo << "  Entrega" << f << "_" << e << " -> NullPila" << f << ";\n";
+                }
+                actualEntrega = actualEntrega->siguiente;
+                e++;
+            }
+        }
+        actualFinca = actualFinca->siguiente;
+        f++;
+    }
+
+    archivo << "}\n";
+    archivo.close();
+
+    system("dot -Tpng reporte_fincas.dot -o reporte_fincas.png");
+    cout << "reporte de fincas y entregas generado (reporte_fincas.png)." << endl;
+}
