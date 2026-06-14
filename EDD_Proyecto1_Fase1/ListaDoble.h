@@ -36,6 +36,7 @@ public:
     void mostrar() const;
     bool estaVacia() const;
     void generarReporteGrafo() const;
+    bool buscarYObtener(const string& codigo_buscar, string& finca, int& sacos, string& fecha) const;
 };
 
 #endif

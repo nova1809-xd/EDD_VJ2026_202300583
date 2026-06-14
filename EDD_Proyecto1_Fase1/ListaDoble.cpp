@@ -148,3 +148,17 @@ void ListaDoble::generarReporteGrafo() const {
     system("dot -Tpng reporte_inventario.dot -o reporte_inventario.png");
     cout << "reporte de inventario generado exitosamente (reporte_inventario.png)." << endl;
 }
+
+bool ListaDoble::buscarYObtener(const string& codigo_buscar, string& finca, int& sacos, string& fecha) const {
+    NodoLote* actual = cabeza;
+    while (actual != nullptr) {
+        if (actual->codigo_lote == codigo_buscar) {
+            finca = actual->finca_origen;
+            sacos = actual->cantidad_sacos;
+            fecha = actual->fecha_recepcion;
+            return true;
+        }
+        actual = actual->siguiente;
+    }
+    return false;
+}
