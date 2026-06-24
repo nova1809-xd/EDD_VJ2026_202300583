@@ -1,0 +1,5 @@
+Lote: 1
+Finca: F001 (finca registrada)
+Fecha: 2026-06-15
+Sacos: 45
+Tipo: Bourbon

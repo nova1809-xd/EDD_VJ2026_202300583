@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
 #include "ArbolB.h"
-#include "GestorJSON.h" 
+#include "GestorJSON.h"
+#include "ArbolMerkle.h"
 
 using std::cout;
 using std::cin;
@@ -11,9 +12,9 @@ using std::string;
 void menuPrincipalFase2() {
     int opcion;
     
-    // instanciamos el arbol b general y el lector json
     ArbolB arbol_fechas; 
     GestorJSON lector;
+    ArbolMerkle arbol_merkle;
 
     do {
         cout << "\n=== EDD COFFEETRACK FASE 2 ===" << endl;
@@ -41,14 +42,63 @@ void menuPrincipalFase2() {
                 cout << "\n--- CARGA MASIVA JSON ---" << endl;
                 cout << "ingresa el nombre del archivo (ej. datos.json): ";
                 cin >> archivo;
-                // llamamos a la funcion maestra del lector
                 lector.cargarDesdeArchivo(archivo, arbol_fechas);
                 break;
             }
             case 2: cout << "proximamente: consultas" << endl; break;
             case 3: cout << "proximamente: rutas" << endl; break;
-            case 4: cout << "proximamente: certificados" << endl; break;
-            case 5: cout << "proximamente: arbol de merkle" << endl; break;
+            case 4: {
+                int sub_opcion;
+                cout << "\n--- MENU DE CERTIFICADOS ---" << endl;
+                cout << "1. Generar certificado de un lote especifico (4.1)" << endl;
+                cout << "2. Generar certificados masivos por fecha (4.2)" << endl;
+                cout << "Elige una opcion: ";
+                cin >> sub_opcion;
+
+                if (sub_opcion == 1) {
+                    string lote_buscar, fecha_encontrada;
+                    cout << "ingresa el codigo de lote: ";
+                    cin >> lote_buscar;
+
+                    NodoAVL* lote = arbol_fechas.buscarLoteGlobal(lote_buscar, fecha_encontrada);
+                    if (lote != nullptr) {
+                        if (lote->hash_certificado == "") {
+                            string hash_gen = arbol_merkle.generarCertificadoFisico(fecha_encontrada, lote->codigo_lote, lote->codigo_finca, lote->nombre_finca, lote->sacos, lote->tipo_cafe);
+                            lote->hash_certificado = hash_gen;
+                            lote->estado = "certificado_emitido";
+                            
+                            arbol_merkle.construirArbol();
+                            cout << "\ncertificado generado y arbol de merkle actualizado." << endl;
+                        } else {
+                            cout << "este lote ya tiene un certificado emitido." << endl;
+                        }
+                    } else {
+                        cout << "error: lote no encontrado." << endl;
+                    }
+                } else if (sub_opcion == 2) {
+                    string fecha_cert;
+                    cout << "ingresa la fecha (ej. 2026-06-15): ";
+                    cin >> fecha_cert;
+
+                    ArbolAVL* avl = arbol_fechas.buscarFecha(fecha_cert);
+                    if (avl != nullptr) {
+                        avl->generarCertificadosLotes(arbol_merkle, fecha_cert);
+                        
+                        arbol_merkle.construirArbol();
+                        cout << "\ncertificados masivos generados para la fecha " << fecha_cert << " y arbol reconstruido." << endl;
+                    } else {
+                        cout << "no hay lotes registrados en esa fecha." << endl;
+                    }
+                } else {
+                    cout << "opcion invalida." << endl;
+                }
+                break;
+            }
+            case 5:
+                cout << "\n--- CONSTRUYENDO ARBOL DE MERKLE ---" << endl;
+                arbol_merkle.construirArbol();
+                arbol_merkle.mostrarRootHash();
+                break;
             case 6: cout << "proximamente: reportes" << endl; break;
             case 7: {
                 cout << "\n--- fechas registradas en el arbol b ---" << endl;

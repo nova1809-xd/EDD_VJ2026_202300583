@@ -37,6 +37,8 @@ struct NodoB {
     }
 };
 
+class ArbolMerkle; // forward declaration para evitar dependencias circulares
+
 class ArbolB {
 private:
     NodoB* raiz;
@@ -49,17 +51,24 @@ private:
     void inOrderRecursivo(NodoB* nodo);
     ArbolAVL* buscarRecursivo(NodoB* nodo, string fecha);
 
+    // puentes para el arbol de merkle y busquedas especificas
+    void recorrerBParaCertificados(NodoB* nodo, ArbolMerkle& merkle);
+    NodoAVL* buscarLoteGlobalRecursivo(NodoB* nodo, string cod_lote, string& fecha_salida);
+
 public:
     ArbolB();
     ~ArbolB();
 
     // funcion maestra que llamaremos desde el menu y la carga json
-    // nota: le pasamos todos los datos del lote para que el arbol b lo delegue al avl
     void insertarLote(string fecha, string cod_lote, string cod_finca, string nom_finca, int sacos, string tipo);
     
     // operaciones publicas
     ArbolAVL* buscarFecha(string fecha);
     void mostrarFechas();
+
+    // llamadas publicas para los certificados
+    void generarTodosLosCertificados(ArbolMerkle& merkle);
+    NodoAVL* buscarLoteGlobal(string cod_lote, string& fecha_salida);
 };
 
 #endif

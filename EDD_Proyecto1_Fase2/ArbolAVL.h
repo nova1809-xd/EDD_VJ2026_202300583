@@ -46,6 +46,7 @@ struct NodoAVL {
     }
 };
 
+class ArbolMerkle;
 class ArbolAVL {
 private:
     NodoAVL* raiz;
@@ -64,6 +65,8 @@ private:
     // recorridos
     void inOrderRecursivo(NodoAVL* nodo);
 
+    void recorrerYGenerarCertificados(NodoAVL* nodo, ArbolMerkle& merkle, string fecha);
+
 public:
     ArbolAVL();
     ~ArbolAVL();
@@ -71,6 +74,7 @@ public:
     void insertar(string cod_lote, string cod_finca, string nom_finca, int sacos, string tipo);
     void mostrarInOrder();
     NodoAVL* buscarLote(string codigo_lote);
+    void generarCertificadosLotes(ArbolMerkle& merkle, string fecha);
 };
 
 #endif

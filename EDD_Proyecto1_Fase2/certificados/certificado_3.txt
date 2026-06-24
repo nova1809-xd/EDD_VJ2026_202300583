@@ -1,0 +1,5 @@
+Lote: 3
+Finca: F003 (finca registrada)
+Fecha: 2026-06-20
+Sacos: 55
+Tipo: Gesha

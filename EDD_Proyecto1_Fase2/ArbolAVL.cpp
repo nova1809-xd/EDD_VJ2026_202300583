@@ -1,5 +1,6 @@
 #include "ArbolAVL.h"
 #include <algorithm> 
+#include "ArbolMerkle.h"
 
 using std::cout;
 using std::endl;
@@ -155,4 +156,24 @@ void ArbolAVL::mostrarInOrder() {
         return;
     }
     inOrderRecursivo(raiz);
+}
+
+
+void ArbolAVL::recorrerYGenerarCertificados(NodoAVL* nodo, ArbolMerkle& merkle, string fecha) {
+    if (nodo != nullptr) {
+        recorrerYGenerarCertificados(nodo->izquierdo, merkle, fecha);
+        
+        // generamos el certificado solo si no tiene uno todavia
+        if (nodo->hash_certificado == "") {
+            string hash_gen = merkle.generarCertificadoFisico(fecha, nodo->codigo_lote, nodo->codigo_finca, nodo->nombre_finca, nodo->sacos, nodo->tipo_cafe);
+            nodo->hash_certificado = hash_gen;
+            nodo->estado = "certificado_emitido"; // actualizamos el estado
+        }
+        
+        recorrerYGenerarCertificados(nodo->derecho, merkle, fecha);
+    }
+}
+
+void ArbolAVL::generarCertificadosLotes(ArbolMerkle& merkle, string fecha) {
+    recorrerYGenerarCertificados(raiz, merkle, fecha);
 }
