@@ -45,18 +45,33 @@ string ArbolMerkle::generarHashCasero(string contenido) {
 
 // opcion 4: genera el .txt y mete su hash a la lista de bloques
 string ArbolMerkle::generarCertificadoFisico(string fecha, string cod_lote, string cod_finca, string nombre_finca, int sacos, string tipo_cafe) {
-    string nombre_archivo = "certificados/certificado_" + cod_lote + ".txt";
-    string contenido = "Lote: " + cod_lote + "\nFinca: " + cod_finca + " (" + nombre_finca + ")\n" +
-                       "Fecha: " + fecha + "\nSacos: " + std::to_string(sacos) + "\nTipo: " + tipo_cafe;
+    // 1. Hash del nombre (hash_nombre)
+    string hash_nombre = generarHashCasero(cod_lote);
+    string nombre_archivo = "certificados/" + hash_nombre + ".txt";
+
+    // 2. Armar el contenido con el formato exacto de la rubrica
+    string contenido = "CERTIFICADO DE ENTREGA - EDD COFFEETRACK\n";
+    contenido += "========================================\n";
+    contenido += "Fecha          : " + fecha + "\n";
+    contenido += "Codigo lote    : " + cod_lote + "\n";
+    contenido += "Finca          : " + nombre_finca + " (" + cod_finca + ")\n";
+    contenido += "Tipo de cafe   : " + tipo_cafe + "\n";
+    contenido += "Sacos          : " + std::to_string(sacos) + "\n";
+    contenido += "Ruta tomada    : N/A (Fase 2 modificada)\n";
+    contenido += "Distancia      : N/A\n";
+    contenido += "Estado final   : certificado_emitido\n";
+    contenido += "========================================\n";
+
+    // 3. Hash del contenido (hash_contenido)
+    string hash_contenido = generarHashCasero(contenido);
+    contenido += "Hash de contenido: " + hash_contenido + "\n";
 
     ofstream archivo(nombre_archivo);
     if (archivo.is_open()) {
         archivo << contenido;
         archivo.close();
         
-        string hash_generado = generarHashCasero(contenido);
-        
-        NodoHashList* nuevo = new NodoHashList(hash_generado);
+        NodoHashList* nuevo = new NodoHashList(hash_contenido);
         if (cabeza_hashes == nullptr) {
             cabeza_hashes = nuevo;
         } else {
@@ -67,9 +82,9 @@ string ArbolMerkle::generarCertificadoFisico(string fecha, string cod_lote, stri
             actual->siguiente = nuevo;
         }
         cantidad_bloques++;
-        cout << "[certificado creado] " << nombre_archivo << " -> Hash: " << hash_generado << endl;
+        cout << "[certificado creado] " << nombre_archivo << " -> Hash Contenido: " << hash_contenido << endl;
         
-        return hash_generado; // agregamos este retorno
+        return hash_contenido; 
     } else {
         cout << "[error] no se pudo crear el archivo." << endl;
         return "";

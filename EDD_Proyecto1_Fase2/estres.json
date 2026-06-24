@@ -1,0 +1,48 @@
+{
+  "fincas": [
+    {
+      "codigo": "F001",
+      "nombre": "Finca La Hermosa",
+      "region": "Huehuetenango",
+      "propietario": "Carlos Mendez",
+      "conexiones": [
+        { "destino": "F002", "distancia_km": 45 },
+        { "destino": "BENEFICIO", "distancia_km": 127 }
+      ]
+    },
+    {
+      "codigo": "F002",
+      "nombre": "Finca El Roble",
+      "region": "San Marcos",
+      "propietario": "Ana Perez",
+      "conexiones": [
+        { "destino": "F001", "distancia_km": 45 },
+        { "destino": "BENEFICIO", "distancia_km": 98 }
+      ]
+    },
+    {
+      "codigo": "F003",
+      "nombre": "Finca Las Nubes",
+      "region": "Alta Verapaz",
+      "propietario": "Mario Godinez",
+      "conexiones": [
+        { "destino": "F002", "distancia_km": 60 },
+        { "destino": "BENEFICIO", "distancia_km": 150 }
+      ]
+    }
+  ],
+  "entregas": [
+    { "fecha": "2026-06-01 12:00:00", "codigo_lote": "L01", "finca": "F001", "sacos": 10, "tipo_cafe": "Bourbon", "estado": "recibido" },
+    { "fecha": "2026-06-02 12:00:00", "codigo_lote": "L02", "finca": "F002", "sacos": 20, "tipo_cafe": "Caturra", "estado": "recibido" },
+    { "fecha": "2026-06-03 12:00:00", "codigo_lote": "L03", "finca": "F003", "sacos": 30, "tipo_cafe": "Gesha", "estado": "recibido" },
+    { "fecha": "2026-06-04 12:00:00", "codigo_lote": "L04", "finca": "F001", "sacos": 40, "tipo_cafe": "Bourbon", "estado": "recibido" },
+    { "fecha": "2026-06-05 12:00:00", "codigo_lote": "L05", "finca": "F002", "sacos": 50, "tipo_cafe": "Caturra", "estado": "recibido" },
+    { "fecha": "2026-06-06 12:00:00", "codigo_lote": "L06", "finca": "F003", "sacos": 60, "tipo_cafe": "Gesha", "estado": "recibido" },
+    { "fecha": "2026-06-07 12:00:00", "codigo_lote": "L07", "finca": "F001", "sacos": 70, "tipo_cafe": "Bourbon", "estado": "recibido" },
+    { "fecha": "2026-06-08 12:00:00", "codigo_lote": "L08", "finca": "F002", "sacos": 80, "tipo_cafe": "Caturra", "estado": "recibido" },
+    { "fecha": "2026-06-09 12:00:00", "codigo_lote": "L09", "finca": "F003", "sacos": 90, "tipo_cafe": "Gesha", "estado": "recibido" },
+    { "fecha": "2026-06-10 12:00:00", "codigo_lote": "L10", "finca": "F001", "sacos": 100, "tipo_cafe": "Bourbon", "estado": "recibido" },
+    { "fecha": "2026-06-10 12:00:00", "codigo_lote": "L11", "finca": "F002", "sacos": 110, "tipo_cafe": "Caturra", "estado": "recibido" },
+    { "fecha": "2026-06-10 12:00:00", "codigo_lote": "L12", "finca": "F003", "sacos": 120, "tipo_cafe": "Gesha", "estado": "recibido" }
+  ]
+}
