@@ -1,5 +1,6 @@
 #include "ArbolB.h"
 #include "ArbolMerkle.h" // incluimos la cabecera para la emision de certificados
+#include <fstream>
 
 using std::cout;
 using std::endl;
@@ -246,4 +247,49 @@ NodoAVL* ArbolB::buscarLoteGlobalRecursivo(NodoB* nodo, string cod_lote, string&
 // wrapper publico para la busqueda global sin conocer la fecha de antemano
 NodoAVL* ArbolB::buscarLoteGlobal(string cod_lote, string& fecha_salida) {
     return buscarLoteGlobalRecursivo(raiz, cod_lote, fecha_salida);
+}
+
+void ArbolB::generarDotRecursivoB(NodoB* nodo, std::ofstream& archivo) {
+    if (nodo != nullptr) {
+        unsigned long long id_nodo = reinterpret_cast<unsigned long long>(nodo);
+        
+        // armamos la etiqueta del nodo B con sus puertos
+        archivo << "    node" << id_nodo << " [label=\"";
+        int i;
+        for (i = 0; i < nodo->cantidad_claves; i++) {
+            archivo << "<f" << i << "> |" << nodo->claves[i].fecha << "| ";
+        }
+        archivo << "<f" << i << ">\"];\n";
+
+        // enlazamos con los hijos
+        if (!nodo->es_hoja) {
+            for (i = 0; i <= nodo->cantidad_claves; i++) {
+                if (nodo->hijos[i] != nullptr) {
+                    unsigned long long id_hijo = reinterpret_cast<unsigned long long>(nodo->hijos[i]);
+                    archivo << "    node" << id_nodo << ":f" << i << " -> node" << id_hijo << ";\n";
+                    generarDotRecursivoB(nodo->hijos[i], archivo);
+                }
+            }
+        }
+    }
+}
+
+void ArbolB::generarReporteB() {
+    std::ofstream archivo("reportes/arbol_b.dot");
+    if (archivo.is_open()) {
+        archivo << "digraph ArbolB {\n";
+        archivo << "    node [shape=record, style=filled, fillcolor=\"#81b1d8\", fontname=\"Helvetica\"];\n";
+        
+        if (raiz != nullptr) generarDotRecursivoB(raiz, archivo);
+        
+        archivo << "}\n";
+        archivo.close();
+        
+        int resultado = system("dot -Tpng reportes/arbol_b.dot -o reportes/arbol_b.png");
+        if (resultado == 0) {
+            cout << "reporte del arbol b generado exitosamente en: reportes/arbol_b.png" << endl;
+        } else {
+            cout << "archivo arbol_b.dot generado en reportes/. (instala graphviz para ver el .png)" << endl;
+        }
+    }
 }

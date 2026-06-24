@@ -1,6 +1,7 @@
 #include "ArbolAVL.h"
 #include <algorithm> 
 #include "ArbolMerkle.h"
+#include <fstream>
 
 using std::cout;
 using std::endl;
@@ -178,4 +179,51 @@ void ArbolAVL::recorrerYGenerarCertificados(NodoAVL* nodo, ArbolMerkle& merkle, 
 
 void ArbolAVL::generarCertificadosLotes(ArbolMerkle& merkle, string fecha) {
     recorrerYGenerarCertificados(raiz, merkle, fecha);
+}
+
+void ArbolAVL::generarDotRecursivo(NodoAVL* nodo, std::ofstream& archivo) {
+    if (nodo != nullptr) {
+        // usamos la direccion de memoria del nodo como ID unico
+        unsigned long long id_nodo = reinterpret_cast<unsigned long long>(nodo);
+        
+        archivo << "    node" << id_nodo << " [label=\"Lote: " << nodo->codigo_lote 
+                << "\\nFinca: " << nodo->codigo_finca << "\\nEstado: " << nodo->estado << "\"];\n";
+        
+        if (nodo->izquierdo != nullptr) {
+            unsigned long long id_izq = reinterpret_cast<unsigned long long>(nodo->izquierdo);
+            archivo << "    node" << id_nodo << " -> node" << id_izq << ";\n";
+            generarDotRecursivo(nodo->izquierdo, archivo);
+        }
+        if (nodo->derecho != nullptr) {
+            unsigned long long id_der = reinterpret_cast<unsigned long long>(nodo->derecho);
+            archivo << "    node" << id_nodo << " -> node" << id_der << ";\n";
+            generarDotRecursivo(nodo->derecho, archivo);
+        }
+    }
+}
+
+void ArbolAVL::generarReporte(string fecha) {
+    string nombre_archivo_dot = "reportes/avl_" + fecha + ".dot";
+    string nombre_archivo_png = "reportes/avl_" + fecha + ".png";
+    
+    std::ofstream archivo(nombre_archivo_dot);
+    if (archivo.is_open()) {
+        archivo << "digraph AVL {\n";
+        archivo << "    node [shape=box, style=filled, fillcolor=\"#a2d149\", fontname=\"Helvetica\"];\n";
+        archivo << "    edge [color=\"#555555\"];\n";
+        
+        if (raiz != nullptr) generarDotRecursivo(raiz, archivo);
+        
+        archivo << "}\n";
+        archivo.close();
+        
+        string comando = "dot -Tpng " + nombre_archivo_dot + " -o " + nombre_archivo_png;
+        int resultado = system(comando.c_str());
+        
+        if (resultado == 0) {
+            cout << "reporte avl generado exitosamente en: " << nombre_archivo_png << endl;
+        } else {
+            cout << "archivo .dot generado en reportes/. (instala graphviz para ver el .png)" << endl;
+        }
+    }
 }

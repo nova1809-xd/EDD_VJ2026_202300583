@@ -55,6 +55,8 @@ private:
     void recorrerBParaCertificados(NodoB* nodo, ArbolMerkle& merkle);
     NodoAVL* buscarLoteGlobalRecursivo(NodoB* nodo, string cod_lote, string& fecha_salida);
 
+    void generarDotRecursivoB(NodoB* nodo, std::ofstream& archivo); 
+
 public:
     ArbolB();
     ~ArbolB();
@@ -69,6 +71,8 @@ public:
     // llamadas publicas para los certificados
     void generarTodosLosCertificados(ArbolMerkle& merkle);
     NodoAVL* buscarLoteGlobal(string cod_lote, string& fecha_salida);
+
+    void generarReporteB();
 };
 
 #endif

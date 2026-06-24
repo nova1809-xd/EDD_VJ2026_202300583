@@ -142,7 +142,32 @@ void menuPrincipalFase2() {
                 arbol_merkle.construirArbol();
                 arbol_merkle.mostrarRootHash();
                 break;
-            case 6: cout << "proximamente: reportes" << endl; break;
+            case 6: {
+                int sub_opcion;
+                cout << "\n--- REPORTES GRAPHVIZ ---" << endl;
+                cout << "1. Generar reporte del Arbol B (Fechas)" << endl;
+                cout << "2. Generar reporte de un Arbol AVL (Lotes por fecha)" << endl;
+                cout << "Elige una opcion: ";
+                cin >> sub_opcion;
+
+                if (sub_opcion == 1) {
+                    arbol_fechas.generarReporteB();
+                } else if (sub_opcion == 2) {
+                    string fecha_rep;
+                    cout << "ingresa la fecha del arbol AVL a graficar (ej. 2026-06-15): ";
+                    cin >> fecha_rep;
+                    
+                    ArbolAVL* avl = arbol_fechas.buscarFecha(fecha_rep);
+                    if (avl != nullptr) {
+                        avl->generarReporte(fecha_rep);
+                    } else {
+                        cout << "no hay registros para esa fecha." << endl;
+                    }
+                } else {
+                    cout << "opcion invalida." << endl;
+                }
+                break;
+            }
             case 7: {
                 cout << "\n--- fechas registradas en el arbol b ---" << endl;
                 arbol_fechas.mostrarFechas();

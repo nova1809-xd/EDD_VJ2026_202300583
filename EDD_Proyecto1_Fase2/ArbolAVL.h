@@ -99,6 +99,8 @@ private:
     void inOrderRecursivo(NodoAVL* nodo);
     void recorrerYGenerarCertificados(NodoAVL* nodo, ArbolMerkle& merkle, string fecha);
 
+    void generarDotRecursivo(NodoAVL* nodo, std::ofstream& archivo);
+
 public:
     ArbolAVL();
     ~ArbolAVL();
@@ -107,6 +109,8 @@ public:
     void mostrarInOrder();
     NodoAVL* buscarLote(string codigo_lote);
     void generarCertificadosLotes(ArbolMerkle& merkle, string fecha);
+
+    void generarReporte(string fecha);
 };
 
 #endif
