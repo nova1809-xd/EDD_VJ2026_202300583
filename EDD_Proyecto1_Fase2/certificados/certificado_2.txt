@@ -1,5 +1,0 @@
-Lote: 2
-Finca: F002 (finca registrada)
-Fecha: 2026-06-15
-Sacos: 30
-Tipo: Caturra

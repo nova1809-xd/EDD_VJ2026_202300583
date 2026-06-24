@@ -3,17 +3,24 @@
 
 #include <string>
 #include <iostream>
+#include <ctime>
 
 using std::string;
 
-// estructura para el historial de estados (una lista simple)
-struct NodoEstado {
+// nodo simple para hacer la lista del historial de trazabilidad
+struct HistorialEstado {
     string estado;
     string timestamp;
-    NodoEstado* siguiente;
-};
+    HistorialEstado* siguiente;
 
-// estructura principal del nodo avl sin los campos de dijkstra
+    HistorialEstado(string est, string ts) {
+        estado = est;
+        timestamp = ts;
+        siguiente = nullptr;
+    }
+};   
+
+// estructura principal del nodo avl
 struct NodoAVL {
     string codigo_lote;
     string codigo_finca;
@@ -23,7 +30,8 @@ struct NodoAVL {
     string estado; 
     string hash_certificado; 
     
-    NodoEstado* historial_estados; 
+    // puntero a la lista del historial
+    HistorialEstado* cabeza_historial; 
 
     // punteros del arbol y balance
     NodoAVL* izquierdo;
@@ -39,14 +47,39 @@ struct NodoAVL {
         tipo_cafe = tipo;
         estado = "recibido";
         hash_certificado = "";
-        historial_estados = nullptr;
         izquierdo = nullptr;
         derecho = nullptr;
         altura = 1; // un nodo nuevo siempre se inserta como hoja
+        
+        // inicializamos el historial y metemos el primer estado
+        cabeza_historial = nullptr;
+        agregarAlHistorial("recibido");
+    }
+
+    // funcion interna del nodo para agregar al historial con la hora actual
+    void agregarAlHistorial(string nuevo_estado) {
+        time_t ahora = time(0);
+        tm* tiempo = localtime(&ahora);
+        char buffer[80];
+        strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tiempo);
+        string ts(buffer);
+
+        HistorialEstado* nuevo = new HistorialEstado(nuevo_estado, ts);
+        
+        if (cabeza_historial == nullptr) {
+            cabeza_historial = nuevo;
+        } else {
+            HistorialEstado* actual = cabeza_historial;
+            while (actual->siguiente != nullptr) {
+                actual = actual->siguiente;
+            }
+            actual->siguiente = nuevo;
+        }
     }
 };
 
-class ArbolMerkle;
+class ArbolMerkle; // forward declaration
+
 class ArbolAVL {
 private:
     NodoAVL* raiz;
@@ -64,7 +97,6 @@ private:
     
     // recorridos
     void inOrderRecursivo(NodoAVL* nodo);
-
     void recorrerYGenerarCertificados(NodoAVL* nodo, ArbolMerkle& merkle, string fecha);
 
 public:

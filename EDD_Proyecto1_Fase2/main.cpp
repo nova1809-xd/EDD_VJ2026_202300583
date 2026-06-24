@@ -45,7 +45,49 @@ void menuPrincipalFase2() {
                 lector.cargarDesdeArchivo(archivo, arbol_fechas);
                 break;
             }
-            case 2: cout << "proximamente: consultas" << endl; break;
+            case 2: {
+                string lote_buscar, fecha_encontrada;
+                cout << "\n--- CONSULTAS Y TRAZABILIDAD ---" << endl;
+                cout << "ingresa el codigo de lote a consultar: ";
+                cin >> lote_buscar;
+
+                NodoAVL* lote = arbol_fechas.buscarLoteGlobal(lote_buscar, fecha_encontrada);
+                if (lote != nullptr) {
+                    cout << "\n--- DETALLES DEL LOTE ---" << endl;
+                    cout << "Codigo: " << lote->codigo_lote << endl;
+                    cout << "Finca: " << lote->codigo_finca << " (" << lote->nombre_finca << ")" << endl;
+                    cout << "Fecha recepcion: " << fecha_encontrada << endl;
+                    cout << "Estado actual: " << lote->estado << endl;
+                    
+                    int sub_opcion;
+                    cout << "\n1. Avanzar estado del lote" << endl;
+                    cout << "2. Ver historial de trazabilidad" << endl;
+                    cout << "Elige una opcion: ";
+                    cin >> sub_opcion;
+
+                    if (sub_opcion == 1) {
+                        string nuevo_estado;
+                        cout << "ingresa el nuevo estado (ej. tostado, empacado): ";
+                        cin >> nuevo_estado;
+                        
+                        lote->estado = nuevo_estado;
+                        lote->agregarAlHistorial(nuevo_estado);
+                        cout << "estado actualizado y guardado en el historial." << endl;
+                    } else if (sub_opcion == 2) {
+                        cout << "\n--- HISTORIAL DE TRAZABILIDAD ---" << endl;
+                        HistorialEstado* actual = lote->cabeza_historial;
+                        while(actual != nullptr) {
+                            cout << "[" << actual->timestamp << "] -> " << actual->estado << endl;
+                            actual = actual->siguiente;
+                        }
+                    } else {
+                        cout << "opcion invalida." << endl;
+                    }
+                } else {
+                    cout << "error: lote no encontrado en el sistema." << endl;
+                }
+                break;
+            }
             case 3: cout << "proximamente: rutas" << endl; break;
             case 4: {
                 int sub_opcion;
@@ -66,6 +108,7 @@ void menuPrincipalFase2() {
                             string hash_gen = arbol_merkle.generarCertificadoFisico(fecha_encontrada, lote->codigo_lote, lote->codigo_finca, lote->nombre_finca, lote->sacos, lote->tipo_cafe);
                             lote->hash_certificado = hash_gen;
                             lote->estado = "certificado_emitido";
+                            lote->agregarAlHistorial("certificado_emitido");
                             
                             arbol_merkle.construirArbol();
                             cout << "\ncertificado generado y arbol de merkle actualizado." << endl;

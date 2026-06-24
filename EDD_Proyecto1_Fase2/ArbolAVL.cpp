@@ -168,6 +168,8 @@ void ArbolAVL::recorrerYGenerarCertificados(NodoAVL* nodo, ArbolMerkle& merkle, 
             string hash_gen = merkle.generarCertificadoFisico(fecha, nodo->codigo_lote, nodo->codigo_finca, nodo->nombre_finca, nodo->sacos, nodo->tipo_cafe);
             nodo->hash_certificado = hash_gen;
             nodo->estado = "certificado_emitido"; // actualizamos el estado
+
+            nodo->agregarAlHistorial("certificado_emitido");
         }
         
         recorrerYGenerarCertificados(nodo->derecho, merkle, fecha);
