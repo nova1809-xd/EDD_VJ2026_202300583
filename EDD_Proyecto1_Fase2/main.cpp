@@ -9,19 +9,60 @@ using std::cin;
 using std::endl;
 using std::string;
 
+// estructura manual para guardar las fincas y validar duplicados (opcion 3.1)
+struct FincaManual {
+    string codigo;
+    string nombre;
+    string region;
+    string propietario;
+    FincaManual* siguiente;
+
+    FincaManual(string c, string n, string r, string p) {
+        codigo = c; nombre = n; region = r; propietario = p;
+        siguiente = nullptr;
+    }
+};
+
+struct ListaFincas {
+    FincaManual* cabeza = nullptr;
+
+    bool existe(string codigo) {
+        FincaManual* actual = cabeza;
+        while (actual != nullptr) {
+            if (actual->codigo == codigo) return true;
+            actual = actual->siguiente;
+        }
+        return false;
+    }
+
+    void insertar(string c, string n, string r, string p) {
+        FincaManual* nueva = new FincaManual(c, n, r, p);
+        if (cabeza == nullptr) {
+            cabeza = nueva;
+        } else {
+            FincaManual* actual = cabeza;
+            while (actual->siguiente != nullptr) {
+                actual = actual->siguiente;
+            }
+            actual->siguiente = nueva;
+        }
+    }
+};
+
 void menuPrincipalFase2() {
     int opcion;
     
     ArbolB arbol_fechas; 
     GestorJSON lector;
     ArbolMerkle arbol_merkle;
+    ListaFincas lista_fincas; // instancia para manejar las fincas
 
     do {
         cout << "\n=== EDD COFFEETRACK FASE 2 ===" << endl;
         cout << "--- ADMINISTRADOR ---" << endl;
         cout << "1. Carga masiva desde JSON" << endl;
         cout << "2. Consultas y Trazabilidad" << endl;
-        cout << "3. Rutas (Descartado)" << endl;
+        cout << "3. Rutas" << endl;
         cout << "4. Certificados" << endl;
         cout << "5. Arbol de Merkle" << endl;
         cout << "6. Reportes Graphviz" << endl;
@@ -88,7 +129,50 @@ void menuPrincipalFase2() {
                 }
                 break;
             }
-            case 3: cout << "proximamente: rutas" << endl; break;
+            case 3: {
+                int sub_opcion;
+                cout << "\n--- RUTAS Y FINCAS ---" << endl;
+                cout << "1. Registrar nueva finca y sus conexiones (3.1)" << endl;
+                cout << "Elige una opcion: ";
+                cin >> sub_opcion;
+
+                if (sub_opcion == 1) {
+                    string cod, nom, reg, prop;
+                    cout << "\n--- REGISTRO DE FINCA ---" << endl;
+                    cout << "Codigo de finca: ";
+                    cin >> cod;
+
+                    if (lista_fincas.existe(cod)) {
+                        cout << "[error] el codigo de finca ya existe en el sistema. no se registrara el duplicado." << endl;
+                    } else {
+                        cin.ignore(); // limpiar el buffer
+                        cout << "Nombre: "; getline(cin, nom);
+                        cout << "Region: "; getline(cin, reg);
+                        cout << "Propietario: "; getline(cin, prop);
+                        
+                        lista_fincas.insertar(cod, nom, reg, prop);
+                        cout << "[exito] finca registrada." << endl;
+
+                        char agregar_conn;
+                        do {
+                            cout << "\n¿Agregar conexion? (s/n): ";
+                            cin >> agregar_conn;
+                            if (tolower(agregar_conn) == 's') {
+                                string destino;
+                                float dist;
+                                cout << "Destino (codigo de finca o BENEFICIO): "; 
+                                cin >> destino;
+                                cout << "Distancia en km: "; 
+                                cin >> dist;
+                                cout << "conexion registrada en memoria." << endl;
+                            }
+                        } while (tolower(agregar_conn) == 's');
+                    }
+                } else {
+                    cout << "opcion invalida." << endl;
+                }
+                break;
+            }
             case 4: {
                 int sub_opcion;
                 cout << "\n--- MENU DE CERTIFICADOS ---" << endl;

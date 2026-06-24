@@ -1,0 +1,12 @@
+CERTIFICADO DE ENTREGA - EDD COFFEETRACK
+========================================
+Fecha          : 2026-06-10
+Codigo lote    : L12
+Finca          : finca registrada (F003)
+Tipo de cafe   : Gesha
+Sacos          : 120
+Ruta tomada    : N/A (Fase 2 modificada)
+Distancia      : N/A
+Estado final   : certificado_emitido
+========================================
+Hash de contenido: 129afa6c
