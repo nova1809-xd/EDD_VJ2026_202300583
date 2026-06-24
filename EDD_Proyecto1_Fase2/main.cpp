@@ -1,23 +1,30 @@
 #include <iostream>
-#include "ArbolAVL.h"
+#include <string>
+#include "ArbolB.h"
+#include "GestorJSON.h" 
 
 using std::cout;
 using std::cin;
 using std::endl;
+using std::string;
 
-// el nuevo menu principal de la fase 2
 void menuPrincipalFase2() {
     int opcion;
+    
+    // instanciamos el arbol b general y el lector json
+    ArbolB arbol_fechas; 
+    GestorJSON lector;
+
     do {
         cout << "\n=== EDD COFFEETRACK FASE 2 ===" << endl;
         cout << "--- ADMINISTRADOR ---" << endl;
-        cout << "1. Gestion de Datos" << endl;
+        cout << "1. Carga masiva desde JSON" << endl;
         cout << "2. Consultas y Trazabilidad" << endl;
         cout << "3. Rutas (Descartado)" << endl;
         cout << "4. Certificados" << endl;
         cout << "5. Arbol de Merkle" << endl;
         cout << "6. Reportes Graphviz" << endl;
-        cout << "7. [TEST] Probar Arbol AVL" << endl;
+        cout << "7. [TEST] Mostrar Arbol B y AVL" << endl;
         cout << "0. Salir" << endl;
         cout << "Elige una opcion: ";
         cin >> opcion;
@@ -29,25 +36,35 @@ void menuPrincipalFase2() {
         }
 
         switch(opcion) {
-            case 1: cout << "proximamente: carga de JSON" << endl; break;
+            case 1: {
+                string archivo;
+                cout << "\n--- CARGA MASIVA JSON ---" << endl;
+                cout << "ingresa el nombre del archivo (ej. datos.json): ";
+                cin >> archivo;
+                // llamamos a la funcion maestra del lector
+                lector.cargarDesdeArchivo(archivo, arbol_fechas);
+                break;
+            }
             case 2: cout << "proximamente: consultas" << endl; break;
             case 3: cout << "proximamente: rutas" << endl; break;
             case 4: cout << "proximamente: certificados" << endl; break;
             case 5: cout << "proximamente: arbol de merkle" << endl; break;
             case 6: cout << "proximamente: reportes" << endl; break;
             case 7: {
-                // --- inicio de la prueba del avl ---
-                ArbolAVL arbol_prueba;
-                cout << "\n--- insertando lotes en el arbol avl ---" << endl;
-                
-                arbol_prueba.insertar("LOT-001", "F001", "finca la hermosa", 45, "bourbon");
-                arbol_prueba.insertar("LOT-002", "F002", "finca el roble", 30, "caturra");
-                arbol_prueba.insertar("LOT-003", "F003", "finca las nubes", 55, "gesha");
+                cout << "\n--- fechas registradas en el arbol b ---" << endl;
+                arbol_fechas.mostrarFechas();
 
-                cout << "lotes insertados correctamente.\n" << endl;
-                cout << "--- recorrido in-order ---" << endl;
-                arbol_prueba.mostrarInOrder();
-                // --- fin de la prueba ---
+                string fecha_buscar;
+                cout << "\ningresa una fecha para ver sus lotes (ej. 2026-06-15): ";
+                cin >> fecha_buscar;
+
+                ArbolAVL* avl = arbol_fechas.buscarFecha(fecha_buscar);
+                if(avl != nullptr) {
+                    cout << "lotes encontrados:" << endl;
+                    avl->mostrarInOrder();
+                } else {
+                    cout << "no hay lotes para esa fecha." << endl;
+                }
                 break;
             }
             case 0: cout << "saliendo del sistema..." << endl; break;
